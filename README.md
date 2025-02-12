@@ -1,7 +1,7 @@
 # Rebalancing Funds Problem Statement
 
-One of the unique challenges in DeFi trading
-is to move funds across different blockchains quickly.
+One of the unique challenges in DeFi trading is to move funds across different
+blockchains quickly.
 Build a tool to allow the trading strategy to programmatically move funds
 between Ethereum mainnet and Mantle chain.
 It should handle as many edge cases as possible and ensure that the funds arrive
@@ -40,8 +40,12 @@ Kindly share your repo within 1 week of receiving this assignment.
   - logging
 - flow
   - register wallets
-  - batch endpoint
+  - endpoints
+    - batch/single
+    - sync/async
 - testing
 - resources
   - <https://github.com/ethereum/go-ethereum>
   - <https://docs.mantle.xyz/network>
+  - <https://github.com/mantlenetworkio/mantle-tutorial/blob/main/cross-dom-bridge-eth/index.js>
+  - <https://github.com/mantlenetworkio/mantle-tutorial/blob/main/cross-dom-bridge-mnt/index.js>
