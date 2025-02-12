@@ -7,26 +7,18 @@ between Ethereum mainnet and Mantle chain.
 It should handle as many edge cases as possible and ensure that the funds arrive
 at the destination correctly.
 
-You are free to the following programming languages, with the following
-limitations:
-
-1. Typescript
-2. Python (type hints coverage must be > 90%)
-3. Golang
-4. Rust
-5. Java The tool must be containerized and deployable via docker.
-
-Kindly share your repo within 1 week of receiving this assignment.
-
 ## Notes
 
 - questions
   - how will users use the tool (browser, command line, HTTP REST API)?
-  - will it be deployed per use, or as a centralised service?
+  - will it be deployed per user, or as a centralised service?
     - self-deployed
       - keys are self-managed
     - centralised
       - key management and authentication
+  - what type of funds will be moved?
+    - network tokens?
+    - smart contract tokens?
 - architecture
   - storage
     - sqlite
@@ -44,6 +36,7 @@ Kindly share your repo within 1 week of receiving this assignment.
     - batch/single
     - sync/async
 - testing
+  - testnet/localnet setup
 - resources
   - <https://github.com/ethereum/go-ethereum>
   - <https://docs.mantle.xyz/network>
