@@ -9,6 +9,8 @@ at the destination correctly.
 
 ## Notes
 
+- edge cases
+  - token does not implement ERC20 properly
 - architecture (microservice)
   - storage
     - sqlite
@@ -20,11 +22,16 @@ at the destination correctly.
   - batching
   - queues
   - logging
+  - sdk vs manual
 - flow
   - register wallets
   - endpoints
     - batch/single
     - sync/async
+  - tokens
+    - native coins
+    - ERC20 (L1)
+    - ERC20 (L2)
 - testing
   - testnet/localnet setup
 - resources
