@@ -6,7 +6,7 @@ import { ENV_PROVIDER } from "./env.provider";
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const env: Env = app.get(ENV_PROVIDER);
-    await app.listen(env.port);
+    await app.listen(env.SERVER_PORT);
 }
 
 bootstrap();
