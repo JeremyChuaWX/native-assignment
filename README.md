@@ -13,11 +13,12 @@ at the destination correctly.
   - token does not implement ERC20 properly
 - architecture (microservice)
   - storage
-    - sqlite
+    - postgres
     - append-optimised storage
   - auth
     - pub/priv keys
   - caching
+    - redis
     - cache balances?
   - batching
   - queues
