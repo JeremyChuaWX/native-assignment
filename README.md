@@ -7,6 +7,12 @@ between Ethereum mainnet and Mantle chain.
 It should handle as many edge cases as possible and ensure that the funds arrive
 at the destination correctly.
 
+## Usage
+
+- chmod 600 ./pg_config/*
+- docker compose --file compose.dev.yaml up --build
+- docker compose --file compose.dev.yaml down --remove-orphans --volumes
+
 ## Notes
 
 - edge cases
