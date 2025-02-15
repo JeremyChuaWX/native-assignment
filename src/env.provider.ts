@@ -16,7 +16,7 @@ export type Env = z.infer<typeof envSchema>;
 
 export const ENV_PROVIDER = Symbol.for("ENV_PROVIDER");
 
-export const envProvider: Provider<Env> = {
+export const EnvProvider: Provider<Env> = {
     provide: ENV_PROVIDER,
     useFactory: () => envSchema.parse(process.env),
 };
