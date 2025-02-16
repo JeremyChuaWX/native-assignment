@@ -5,11 +5,9 @@ const envSchema = z.object({
     SERVER_PORT: z.coerce.number(),
     SERVER_API_KEY: z.string(),
     L1_RPC: z.string(),
-    L2_RPC: z.string(),
     L1_CHAIN_ID: z.string(),
+    L2_RPC: z.string(),
     L2_CHAIN_ID: z.string(),
-    L1_RPC_PROVIDER: z.string(),
-    L2_RPC_PROVIDER: z.string(),
 });
 
 export type Env = z.infer<typeof envSchema>;

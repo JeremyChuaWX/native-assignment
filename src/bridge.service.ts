@@ -20,8 +20,8 @@ export class BridgeService {
         this.messenger = new CrossChainMessenger({
             l1ChainId: this.env.L1_CHAIN_ID,
             l2ChainId: this.env.L2_CHAIN_ID,
-            l1SignerOrProvider: this.env.L1_RPC_PROVIDER,
-            l2SignerOrProvider: this.env.L2_RPC_PROVIDER,
+            l1SignerOrProvider: this.l1RpcProvider,
+            l2SignerOrProvider: this.l2RpcProvider,
             bedrock: true,
         });
     }
