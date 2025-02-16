@@ -1,8 +1,20 @@
-import { z } from "zod";
+import {
+    ArgumentMetadata,
+    BadRequestException,
+    Injectable,
+    PipeTransform,
+} from "@nestjs/common";
+import { ZodSchema } from "zod";
 
-export const bridgePayloadSchema = z.object({
-    key: z.string(),
-    amount: z.string(),
-});
+@Injectable()
+export class Validate implements PipeTransform {
+    constructor(private readonly schema: ZodSchema) {}
 
-export type BridgePayload = z.infer<typeof bridgePayloadSchema>;
+    transform(value: unknown, metadata: ArgumentMetadata) {
+        try {
+            return this.schema.parse(value);
+        } catch {
+            throw new BadRequestException("validation failed");
+        }
+    }
+}
