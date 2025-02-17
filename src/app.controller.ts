@@ -2,34 +2,12 @@ import { Body, Controller, Post, UsePipes } from "@nestjs/common";
 import { BridgeService } from "src/bridge.service";
 import { Validate } from "src/validation";
 import { z } from "zod";
-
-const depositETHSchema = z.object({
-    l1PrivateKey: z.string(),
-    l2PublicKey: z.string(),
-    amount: z.string(),
-});
-
-const withdrawETHSchema = z.object({
-    l1PublicKey: z.string(),
-    l2PrivateKey: z.string(),
-    amount: z.string(),
-});
-
-const depositERC20Schema = z.object({
-    l1TokenAddress: z.string(),
-    l1PrivateKey: z.string(),
-    l2TokenAddress: z.string(),
-    l2PublicKey: z.string(),
-    amount: z.string(),
-});
-
-const withdrawERC20Schema = z.object({
-    l1TokenAddress: z.string(),
-    l1PublicKey: z.string(),
-    l2TokenAddress: z.string(),
-    l2PrivateKey: z.string(),
-    amount: z.string(),
-});
+import {
+    depositERC20Schema,
+    depositETHSchema,
+    withdrawERC20Schema,
+    withdrawETHSchema,
+} from "./app.validation";
 
 @Controller()
 export class AppController {
