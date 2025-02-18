@@ -82,6 +82,7 @@ export class BridgeService {
             payload.amount,
             { signer: l2Wallet },
         );
+        await approve.wait();
         console.log(`approve transaction hash (on L2): ${approve.hash}`);
 
         const response = await this.messenger.withdrawERC20(
@@ -144,7 +145,7 @@ export class BridgeService {
             this.l1RpcProvider,
         );
 
-        const allowanceResponse = await this.messenger.approveERC20(
+        const approve = await this.messenger.approveERC20(
             payload.l1TokenAddress,
             payload.l2TokenAddress,
             payload.amount,
@@ -152,8 +153,8 @@ export class BridgeService {
                 signer: l1Wallet,
             },
         );
-        await allowanceResponse.wait();
-        console.log(`allowance given by ${allowanceResponse.hash}`);
+        await approve.wait();
+        console.log(`approve transaction hash (on L1): ${approve.hash}`);
 
         const response = await this.messenger.depositERC20(
             payload.l1TokenAddress,
