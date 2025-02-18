@@ -30,20 +30,13 @@ at the destination correctly.
   - queues
   - logging
   - sdk vs manual
-- flow
-  - register wallets
-  - endpoints
-    - batch/single
-    - sync/async
-  - tokens
-    - native coins
-    - ERC20 (L1)
-    - ERC20 (L2)
-- testing
-  - testnet/localnet setup
 - resources
   - <https://docs.mantle.xyz/network>
   - <https://github.com/mantlenetworkio/mantle-tutorial/blob/main/cross-dom-bridge-eth/index.js>
   - <https://github.com/mantlenetworkio/mantle-tutorial/blob/main/cross-dom-bridge-mnt/index.js>
   - <https://github.com/mantlenetworkio/mantle-v2/tree/develop/ops>
   - <https://sdk.mantle.xyz/>
+- bugs
+  - mantle SDK queries from genesis to latest block, rate limiting on RPC for
+    querying ETH logs, cannot await transaction statuses, need to handroll
+    requests to RPC
