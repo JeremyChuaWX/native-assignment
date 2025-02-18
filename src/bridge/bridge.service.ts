@@ -254,7 +254,7 @@ export class BridgeService {
     async getERC20Balance(payload: {
         chain: "L1" | "L2";
         tokenAddress: string;
-        Address: string;
+        address: string;
     }) {
         const provider: ethers.providers.JsonRpcProvider =
             payload.chain === "L1" ? this.l1RpcProvider : this.l2RpcProvider;

@@ -32,5 +32,5 @@ export const withdrawERC20Schema = z.object({
 export const getERC20BalanceSchema = z.object({
     chain: z.enum(["L1", "L2"]),
     tokenAddress: z.string(),
-    Address: z.string(),
+    address: z.string(),
 });
