@@ -1,14 +1,14 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
-import type { Env } from "./env.provider";
-import { ENV_PROVIDER } from "./env.provider";
+import type { Config } from "src/config/config.provider";
+import { CONFIG_PROVIDER } from "src/config/config.provider";
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     app.setGlobalPrefix("/api");
-    const env: Env = app.get(ENV_PROVIDER);
-    await app.listen(env.SERVER_PORT, () => {
-        console.log(`listening on port ${env.SERVER_PORT}`);
+    const config: Config = app.get(CONFIG_PROVIDER);
+    await app.listen(config.SERVER_PORT, () => {
+        console.log(`listening on port ${config.SERVER_PORT}`);
     });
 }
 

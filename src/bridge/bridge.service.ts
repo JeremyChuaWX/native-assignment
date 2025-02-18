@@ -5,8 +5,8 @@ import {
 } from "@mantleio/sdk";
 import { Inject, Injectable } from "@nestjs/common";
 import { ethers } from "ethers";
-import type { Env } from "./env.provider";
-import { ENV_PROVIDER } from "./env.provider";
+import type { Config } from "src/config/config.provider";
+import { CONFIG_PROVIDER } from "src/config/config.provider";
 
 @Injectable()
 export class BridgeService {
@@ -14,16 +14,16 @@ export class BridgeService {
     private l2RpcProvider: ethers.providers.JsonRpcProvider;
     private messenger: CrossChainMessenger;
 
-    constructor(@Inject(ENV_PROVIDER) private readonly env: Env) {
+    constructor(@Inject(CONFIG_PROVIDER) private readonly config: Config) {
         this.l1RpcProvider = new ethers.providers.JsonRpcProvider(
-            this.env.L1_RPC,
+            this.config.L1_RPC,
         );
         this.l2RpcProvider = new ethers.providers.JsonRpcProvider(
-            this.env.L2_RPC,
+            this.config.L2_RPC,
         );
         this.messenger = new CrossChainMessenger({
-            l1ChainId: this.env.L1_CHAIN_ID,
-            l2ChainId: this.env.L2_CHAIN_ID,
+            l1ChainId: this.config.L1_CHAIN_ID,
+            l2ChainId: this.config.L2_CHAIN_ID,
             l1SignerOrProvider: this.l1RpcProvider,
             l2SignerOrProvider: this.l2RpcProvider,
             bedrock: true,
@@ -31,6 +31,8 @@ export class BridgeService {
     }
 
     async depositETH(payload: { privateKey: string; amount: string }) {
+        console.log("Deposit ETH");
+
         const l1Wallet = new ethers.Wallet(
             payload.privateKey,
             this.l1RpcProvider,
@@ -41,7 +43,6 @@ export class BridgeService {
         );
         const l2Address = await l2Wallet.getAddress();
 
-        console.log("Deposit ETH");
         const response = await this.messenger.depositETH(payload.amount, {
             recipient: l2Address,
             signer: l1Wallet,
@@ -64,6 +65,8 @@ export class BridgeService {
     }
 
     async withdrawETH(payload: { privateKey: string; amount: string }) {
+        console.log("withdraw ETH");
+
         const l1Wallet = new ethers.Wallet(
             payload.privateKey,
             this.l1RpcProvider,
@@ -81,6 +84,7 @@ export class BridgeService {
             { signer: l2Wallet },
         );
         console.log(`Approve transaction hash (on L2): ${approve.hash}`);
+
         const response = await this.messenger.withdrawERC20(
             ethers.constants.AddressZero,
             DEFAULT_L2_CONTRACT_ADDRESSES.BVM_ETH,
@@ -91,7 +95,9 @@ export class BridgeService {
             },
         );
         console.log(`Transaction hash (on L2): ${response.hash}`);
-        await response.wait();
+
+        const receipt = await response.wait();
+
         console.log("Waiting for status to be READY_TO_PROVE");
         await this.messenger.waitForMessageStatus(
             response.hash,
@@ -112,6 +118,7 @@ export class BridgeService {
             response.hash,
             MessageStatus.READY_FOR_RELAY,
         );
+
         console.log("Ready for relay, finalizing message now");
         await this.messenger.finalizeMessage(response.hash);
 
@@ -120,6 +127,8 @@ export class BridgeService {
             response,
             MessageStatus.RELAYED,
         );
+
+        return receipt;
     }
 
     async depositERC20(payload: {
@@ -128,10 +137,13 @@ export class BridgeService {
         l2TokenAddress: string;
         amount: string;
     }) {
+        console.log("deposit ERC20");
+
         const l1Wallet = new ethers.Wallet(
             payload.privateKey,
             this.l1RpcProvider,
         );
+
         const allowanceResponse = await this.messenger.approveERC20(
             payload.l1TokenAddress,
             payload.l2TokenAddress,

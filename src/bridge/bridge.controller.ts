@@ -1,16 +1,16 @@
 import { Body, Controller, Post, UsePipes } from "@nestjs/common";
-import { BridgeService } from "src/bridge.service";
-import { Validate } from "src/validation.pipe";
+import { BridgeService } from "./bridge.service";
+import { Validate } from "src/validation/validation.pipe";
 import { z } from "zod";
 import {
     depositERC20Schema,
     depositETHSchema,
     withdrawERC20Schema,
     withdrawETHSchema,
-} from "./app.schemas";
+} from "./bridge.schemas";
 
-@Controller()
-export class AppController {
+@Controller("/bridge")
+export class BridgeController {
     constructor(private readonly bridgeService: BridgeService) {}
 
     @Post("/eth/deposit")
