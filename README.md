@@ -9,18 +9,23 @@ at the destination correctly.
 
 ## Usage
 
-- chmod 600 ./pg_config/*
-- docker compose --file compose.dev.yaml up --build
-- docker compose --file compose.dev.yaml down --remove-orphans --volumes
+- Start server
+
+  ```bash
+  docker compose --file compose.dev.yaml up --build
+  ```
+
+- Stop server
+
+  ```bash
+  docker compose --file compose.dev.yaml down --remove-orphans --volumes
+  ```
 
 ## Notes
 
 - edge cases
   - token does not implement ERC20 properly
 - architecture (microservice)
-  - storage
-    - postgres
-    - append-optimised storage
   - auth
     - pub/priv keys
   - caching
@@ -28,8 +33,6 @@ at the destination correctly.
     - cache balances?
   - batching
   - queues
-  - logging
-  - sdk vs manual
 - resources
   - <https://docs.mantle.xyz/network>
   - <https://github.com/mantlenetworkio/mantle-tutorial/blob/main/cross-dom-bridge-eth/index.js>
