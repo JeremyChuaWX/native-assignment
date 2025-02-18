@@ -52,11 +52,10 @@ export class BridgeService {
         const receipt = await response.wait();
 
         /*
-        // BUG: waitForMessageStatus searches from genesis block to latest, rate limited by RPC
-
+        BUG: waitForMessageStatus searches from genesis block to latest, rate limited by RPC
         console.log("Waiting for status to change to RELAYED");
         await this.messenger.waitForMessageStatus(
-            response.hash,
+            response,
             MessageStatus.RELAYED,
         );
         */

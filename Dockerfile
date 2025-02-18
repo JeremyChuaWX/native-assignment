@@ -5,10 +5,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
-# FROM deps AS test
-# WORKDIR /app
-# RUN npm run test
-
 FROM base AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
