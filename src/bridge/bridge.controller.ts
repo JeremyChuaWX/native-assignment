@@ -26,26 +26,26 @@ export class BridgeController {
     @UsePipes(new Validate(withdrawETHSchema))
     async withdrawETH(@Body() body: z.infer<typeof withdrawETHSchema>) {
         const transaction = await this.bridgeService.withdrawETH(body);
-        // return {
-        //     transaction: transaction.transactionHash,
-        // };
+        return {
+            transaction: transaction.transactionHash,
+        };
     }
 
     @Post("/erc20/deposit")
     @UsePipes(new Validate(depositERC20Schema))
     async depositERC20(@Body() body: z.infer<typeof depositERC20Schema>) {
         const transaction = await this.bridgeService.depositERC20(body);
-        // return {
-        //     transaction: transaction.transactionHash,
-        // };
+        return {
+            transaction: transaction.transactionHash,
+        };
     }
 
     @Post("/erc20/withdraw")
     @UsePipes(new Validate(withdrawERC20Schema))
     async withdrawERC20(@Body() body: z.infer<typeof withdrawERC20Schema>) {
         const transaction = await this.bridgeService.withdrawERC20(body);
-        // return {
-        //     transaction: transaction.transactionHash,
-        // };
+        return {
+            transaction: transaction.transactionHash,
+        };
     }
 }

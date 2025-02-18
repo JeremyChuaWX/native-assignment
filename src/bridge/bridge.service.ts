@@ -31,7 +31,7 @@ export class BridgeService {
     }
 
     async depositETH(payload: { privateKey: string; amount: string }) {
-        console.log("Deposit ETH");
+        console.log("deposit ETH");
 
         const l1Wallet = new ethers.Wallet(
             payload.privateKey,
@@ -48,7 +48,7 @@ export class BridgeService {
             signer: l1Wallet,
         });
 
-        console.log(`Transaction hash (on L1): ${response.hash}`);
+        console.log(`transaction hash (on L1): ${response.hash}`);
         const receipt = await response.wait();
 
         /*
@@ -83,7 +83,7 @@ export class BridgeService {
             payload.amount,
             { signer: l2Wallet },
         );
-        console.log(`Approve transaction hash (on L2): ${approve.hash}`);
+        console.log(`approve transaction hash (on L2): ${approve.hash}`);
 
         const response = await this.messenger.withdrawERC20(
             ethers.constants.AddressZero,
@@ -94,35 +94,36 @@ export class BridgeService {
                 signer: l2Wallet,
             },
         );
-        console.log(`Transaction hash (on L2): ${response.hash}`);
+        console.log(`transaction hash (on L2): ${response.hash}`);
 
         const receipt = await response.wait();
 
-        console.log("Waiting for status to be READY_TO_PROVE");
+        console.log("waiting for status to be READY_TO_PROVE");
         await this.messenger.waitForMessageStatus(
             response.hash,
             MessageStatus.READY_TO_PROVE,
         );
+
         await this.messenger.proveMessage(response.hash);
 
-        console.log("Waiting for status to change to IN_CHALLENGE_PERIOD");
+        console.log("waiting for status to change to IN_CHALLENGE_PERIOD");
         await this.messenger.waitForMessageStatus(
             response.hash,
             MessageStatus.IN_CHALLENGE_PERIOD,
         );
 
         console.log(
-            "In the challenge period, waiting for status READY_FOR_RELAY",
+            "in the challenge period, waiting for status READY_FOR_RELAY",
         );
         await this.messenger.waitForMessageStatus(
             response.hash,
             MessageStatus.READY_FOR_RELAY,
         );
 
-        console.log("Ready for relay, finalizing message now");
+        console.log("ready for relay, finalizing message now");
         await this.messenger.finalizeMessage(response.hash);
 
-        console.log("Waiting for status to change to RELAYED");
+        console.log("waiting for status to change to RELAYED");
         await this.messenger.waitForMessageStatus(
             response,
             MessageStatus.RELAYED,
@@ -153,6 +154,8 @@ export class BridgeService {
             },
         );
         await allowanceResponse.wait();
+        console.log(`allowance given by ${allowanceResponse.hash}`);
+
         const response = await this.messenger.depositERC20(
             payload.l1TokenAddress,
             payload.l2TokenAddress,
@@ -162,11 +165,17 @@ export class BridgeService {
                 signer: l1Wallet,
             },
         );
-        await response.wait();
+        console.log(`deposit transaction hash (on L1): ${response.hash}`);
+
+        const receipt = await response.wait();
+
+        console.log("waiting for status to change to RELAYED");
         await this.messenger.waitForMessageStatus(
             response.hash,
             MessageStatus.RELAYED,
         );
+
+        return receipt;
     }
 
     async withdrawERC20(payload: {
@@ -175,10 +184,13 @@ export class BridgeService {
         l2TokenAddress: string;
         amount: string;
     }) {
+        console.log("withdraw ERC20");
+
         const l2Wallet = new ethers.Wallet(
             payload.privateKey,
             this.l2RpcProvider,
         );
+
         const response = await this.messenger.withdrawERC20(
             payload.l1TokenAddress,
             payload.l2TokenAddress,
@@ -188,24 +200,41 @@ export class BridgeService {
                 signer: l2Wallet,
             },
         );
-        await response.wait();
+        console.log(`transaction hash (on L2): ${response.hash}`);
+
+        const receipt = await response.wait();
+
+        console.log("waiting for status to be READY_TO_PROVE");
         await this.messenger.waitForMessageStatus(
             response.hash,
             MessageStatus.READY_TO_PROVE,
         );
+
         await this.messenger.proveMessage(response.hash);
+
+        console.log("waiting for status to be IN_CHALLENGE_PERIOD");
         await this.messenger.waitForMessageStatus(
             response.hash,
             MessageStatus.IN_CHALLENGE_PERIOD,
+        );
+
+        console.log(
+            "in the challenge period, waiting for status READY_FOR_RELAY",
         );
         await this.messenger.waitForMessageStatus(
             response.hash,
             MessageStatus.READY_FOR_RELAY,
         );
+
+        console.log("ready for relay, finalizing message now");
         await this.messenger.finalizeMessage(response.hash);
+
+        console.log("waiting for status to change to RELAYED");
         await this.messenger.waitForMessageStatus(
             response,
             MessageStatus.RELAYED,
         );
+
+        return receipt;
     }
 }
