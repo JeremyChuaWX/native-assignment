@@ -7,6 +7,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { ethers } from "ethers";
 import type { Config } from "src/config/config.provider";
 import { CONFIG_PROVIDER } from "src/config/config.provider";
+import { ERC20ABI } from "./bridge.constants";
 
 @Injectable()
 export class BridgeService {
@@ -235,5 +236,33 @@ export class BridgeService {
         );
 
         return receipt;
+    }
+
+    async getL1ETHBalance(payload: { walletAddress: string }) {
+        return await this.l1RpcProvider.getBalance(payload.walletAddress);
+    }
+
+    async getL2ETHBalance(payload: { walletAddress: string }) {
+        const contract = new ethers.Contract(
+            DEFAULT_L2_CONTRACT_ADDRESSES.BVM_ETH as string,
+            ERC20ABI,
+            this.l2RpcProvider,
+        );
+        return await contract.balanceOf(payload.walletAddress);
+    }
+
+    async getERC20Balance(payload: {
+        chain: "L1" | "L2";
+        tokenAddress: string;
+        Address: string;
+    }) {
+        const provider: ethers.providers.JsonRpcProvider =
+            payload.chain === "L1" ? this.l1RpcProvider : this.l2RpcProvider;
+        const contract = new ethers.Contract(
+            payload.tokenAddress,
+            ERC20ABI,
+            provider,
+        );
+        return await contract.balanceOf(payload.tokenAddress);
     }
 }
