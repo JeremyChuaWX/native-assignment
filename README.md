@@ -9,6 +9,27 @@ at the destination correctly.
 
 ## Usage
 
+### Configuration
+
+- Copy the `.env.example` and rename to `.env`
+- Fill in the values for the variables in `.env`
+
+### Development
+
+- Install packages
+
+  ```bash
+  npm install
+  ```
+
+- Run the server
+
+  ```bash
+  npm run start
+  ```
+
+### Docker
+
 - Start server
 
   ```bash
@@ -52,7 +73,7 @@ at the destination correctly.
         }
       }
     },
-    "erc20": {
+    "/erc20": {
       "/deposit": {
         "method": "post",
         "description": "deposits ERC20 token from L1 to L2 for a given address",
