@@ -104,6 +104,7 @@ export class BridgeService {
             MessageStatus.READY_TO_PROVE,
         );
 
+        console.log("proving transaction");
         await this.messenger.proveMessage(response.hash);
 
         console.log("waiting for status to change to IN_CHALLENGE_PERIOD");
@@ -210,6 +211,7 @@ export class BridgeService {
             MessageStatus.READY_TO_PROVE,
         );
 
+        console.log("proving transaction");
         await this.messenger.proveMessage(response.hash);
 
         console.log("waiting for status to be IN_CHALLENGE_PERIOD");
