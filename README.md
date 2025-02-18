@@ -91,9 +91,19 @@ at the destination correctly.
 
 > Notes on potential fixes and implementations
 
-- mantle SDK queries from genesis to latest block, rate limiting on RPC for
-  querying ETH logs, cannot await transaction statuses
-  - potential fix is to handroll requests to RPC to query correct block range
+- querying transaction statuses
+  - when querying for transaction statuses, the mantle SDK queries from genesis
+    to latest block
+  - rate limiting on public RPCs for querying ETH logs cause the status checks
+    to fail
+  - this makes difficult to track, and in the case of withdrawal transactions,
+    unable to complete as we need to prove and finalise transactions only after
+    specific statuses
+  - the current implementation follows the instructions as demonstrated in the
+    mantle docs, but fixes are required for full functinality
+  - potential fix is to handroll status check requests to the RPC, providing a
+    smaller range of blocks to query, avoiding the rate limiting issue block
+    range
 - implement job queue for asynchronous operation
   - waiting for statuses can take very long, (7 days in challenge period for
     mainnet mantle)
